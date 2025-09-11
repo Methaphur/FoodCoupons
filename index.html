@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Coupon Scanner</title>
+  <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+</head>
+<body>
+  <h2>Scan Coupon</h2>
+  <div id="reader" style="width:300px"></div>
+  <p id="result"></p>
+
+  <script>
+    function checkCoupon(id) {
+      fetch("https://script.google.com/macros/s/AKfycby7ic5hjsZYunCRW8ZHU9gUufnuV_WRp-zlSmYsWuxt2luRcKi3kVcwPcT3-QmgjQqZ/execid=" + id)
+        .then(r => r.text())
+        .then(txt => {
+          document.getElementById("result").innerText = txt;
+        });
+    }
+
+    function onScanSuccess(decodedText) {
+      checkCoupon(decodedText);
+    }
+
+    let html5QrcodeScanner = new Html5QrcodeScanner(
+      "reader", { fps: 10, qrbox: 250 });
+    html5QrcodeScanner.render(onScanSuccess);
+  </script>
+</body>
+</html>
