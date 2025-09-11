@@ -2,29 +2,45 @@
 <html>
 <head>
   <title>Coupon Scanner</title>
-  <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/html5-qrcode/html5-qrcode.min.js"></script>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 20px; }
+    #reader { width: 300px; margin: auto; }
+    #result { font-size: 1.2em; margin-top: 20px; }
+  </style>
 </head>
 <body>
   <h2>Scan Coupon</h2>
-  <div id="reader" style="width:300px"></div>
-  <p id="result"></p>
+  <div id="reader"></div>
+  <p id="result">Waiting for scan...</p>
 
   <script>
+    const resultElem = document.getElementById("result");
+
     function checkCoupon(id) {
-      fetch("https://script.google.com/macros/s/AKfycby7ic5hjsZYunCRW8ZHU9gUufnuV_WRp-zlSmYsWuxt2luRcKi3kVcwPcT3-QmgjQqZ/execid=" + id)
+      fetch("https://script.google.com/macros/s/AKfycby7ic5hjsZYunCRW8ZHU9gUufnuV_WRp-zlSmYsWuxt2luRcKi3kVcwPcT3-QmgjQqZ/exec?id=" + encodeURIComponent(id))
         .then(r => r.text())
         .then(txt => {
-          document.getElementById("result").innerText = txt;
+          resultElem.innerText = txt;
+        })
+        .catch(err => {
+          resultElem.innerText = "⚠️ Error contacting server";
+          console.error(err);
         });
     }
 
     function onScanSuccess(decodedText) {
+      resultElem.innerText = "Scanned: " + decodedText + " (checking...)";
       checkCoupon(decodedText);
     }
 
-    let html5QrcodeScanner = new Html5QrcodeScanner(
-      "reader", { fps: 10, qrbox: 250 });
-    html5QrcodeScanner.render(onScanSuccess);
+    function onScanFailure(error) {
+      // just ignore, scanner keeps running
+    }
+
+    let scanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
+    scanner.render(onScanSuccess, onScanFailure);
   </script>
 </body>
 </html>
