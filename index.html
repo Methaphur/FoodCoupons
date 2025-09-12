@@ -7,9 +7,9 @@
   <style>
     body { font-family: sans-serif; text-align: center; padding: 20px; }
     #reader { width: 300px; margin: auto; }
-    #result { font-size: 1.2em; margin-top: 20px; }
-    #adminForm { margin-top: 40px; padding: 15px; border: 1px solid #ccc; border-radius: 8px; }
-    #adminForm input, #adminForm button { margin: 5px; padding: 8px; font-size: 1em; }
+    #result, #updateResult { font-size: 1.2em; margin-top: 20px; }
+    #manualUpdate { margin-top: 30px; }
+    input, button { padding: 8px; margin: 5px; }
   </style>
 </head>
 <body>
@@ -17,28 +17,19 @@
   <div id="reader"></div>
   <p id="result">Waiting for scan...</p>
 
-  <!-- Admin Section -->
-  <div id="adminForm">
-    <h3>Admin: Update Coupon Usage</h3>
-    <form id="updateForm">
-      <input type="text" id="couponID" placeholder="Coupon ID" required>
-      <input type="number" id="used" min="0" placeholder="Times Used" required>
-      <button type="submit">Update</button>
-    </form>
-    <button id="updateLast" style="margin-top:10px;">Update Last Scanned Coupon</button>
+  <div id="manualUpdate">
+    <h3>Manual Update</h3>
+    <input type="text" id="couponIdInput" placeholder="Enter Coupon ID">
+    <input type="number" id="usedCountInput" placeholder="Times Used">
+    <button onclick="updateCoupon()">Update</button>
     <p id="updateResult"></p>
   </div>
 
   <script>
-    // const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxGKIU0IV4bG-TGt_m8yqpHMCIkPecwBqz5B84MS8JKEaZxzzpnvRSrpmfkEdy533kA/exec";
-    // const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzNzvUcyyGxMiwutmNVT6ahffCf-YfMzpSuNt6MUososJN9pTxWJfcJ2ykYpMOJRmiF/exec";
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx_Ez7OEIY4x0qjXecl7R-3H99TXcqkUy53VA_-BnHOF7RJws9pyDpct8QIJUWlu4Kr/exec";
     const resultElem = document.getElementById("result");
     const updateResultElem = document.getElementById("updateResult");
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyBdCH5Dwv-qlubm81B7jBehH_qFSsuRL1bduhl3WAsY7Jx5R8fLVb_X4z39_fi9q61/exec"; // <-- replace with your deployed Apps Script URL
 
-    let lastScannedId = null; // store last scanned coupon
-
-    // === Scanner Logic ===
     function checkCoupon(id) {
       fetch(WEB_APP_URL + "?id=" + encodeURIComponent(id))
         .then(r => r.text())
@@ -51,58 +42,37 @@
         });
     }
 
+    function updateCoupon() {
+      const couponId = document.getElementById("couponIdInput").value.trim();
+      const usedCount = document.getElementById("usedCountInput").value.trim();
+
+      if (!couponId || !usedCount) {
+        updateResultElem.innerText = "⚠️ Enter both Coupon ID and Used Count";
+        return;
+      }
+
+      fetch(WEB_APP_URL + "?update=1&id=" + encodeURIComponent(couponId) + "&used=" + usedCount)
+        .then(r => r.text())
+        .then(txt => {
+          updateResultElem.innerText = txt;
+        })
+        .catch(err => {
+          updateResultElem.innerText = "⚠️ Error contacting server";
+          console.error(err);
+        });
+    }
+
     function onScanSuccess(decodedText) {
-      lastScannedId = decodedText; // save last scanned coupon ID
       resultElem.innerText = "Scanned: " + decodedText + " (checking...)";
       checkCoupon(decodedText);
-
-      // autofill form Coupon ID
-      document.getElementById("couponID").value = decodedText;
     }
 
     function onScanFailure(error) {
-      // ignore errors, scanner keeps running
+      // just ignore, scanner keeps running
     }
 
     let scanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
     scanner.render(onScanSuccess, onScanFailure);
-
-    // === Admin Update Logic ===
-    document.getElementById("updateForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const couponID = document.getElementById("couponID").value.trim();
-      const used = parseInt(document.getElementById("used").value);
-      updateCouponUsage(couponID, used);
-    });
-
-    document.getElementById("updateLast").addEventListener("click", function() {
-      if (!lastScannedId) {
-        updateResultElem.innerText = "⚠️ No coupon scanned yet!";
-        return;
-      }
-      const used = parseInt(document.getElementById("used").value);
-      if (isNaN(used)) {
-        updateResultElem.innerText = "⚠️ Please enter usage count!";
-        return;
-      }
-      updateCouponUsage(lastScannedId, used);
-    });
-
-    function updateCouponUsage(couponID, used) {
-      fetch(WEB_APP_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: couponID, used: used })
-      })
-      .then(r => r.text())
-      .then(txt => {
-        updateResultElem.innerText = txt;
-      })
-      .catch(err => {
-        updateResultElem.innerText = "⚠️ Error contacting server";
-        console.error(err);
-      });
-    }
   </script>
 </body>
 </html>
