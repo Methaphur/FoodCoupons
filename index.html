@@ -19,7 +19,8 @@
     const resultElem = document.getElementById("result");
 
     function checkCoupon(id) {
-      fetch("https://script.google.com/macros/s/AKfycbyqZXoeKjc5R_9XypHwKpgl1Gdl__DSGm3luoFYh--kpDUTGK4tfMuXBN4FScAgq8dS/exec?id=" + encodeURIComponent(id))
+      var WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxGKIU0IV4bG-TGt_m8yqpHMCIkPecwBqz5B84MS8JKEaZxzzpnvRSrpmfkEdy533kA/exec";
+      fetch(WEB_APP_URL + "?id=" + encodeURIComponent(id))
         .then(r => r.text())
         .then(txt => {
           resultElem.innerText = txt;
