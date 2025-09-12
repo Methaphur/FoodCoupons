@@ -1,0 +1,86 @@
+body {
+  font-family: 'Trebuchet MS', sans-serif;
+  text-align: center;
+  padding: 20px;
+  background: linear-gradient(to bottom, #fff8e1, #ffe0b2);
+  background-attachment: fixed;
+}
+
+h2 {
+  color: #d84315;
+  font-size: 2em;
+  margin-bottom: 10px;
+  text-shadow: 1px 1px 2px #ffcc80;
+}
+
+#reader {
+  width: 300px;
+  margin: 20px auto;
+  border: 4px solid #ff9800;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+#result {
+  font-size: 1.2em;
+  margin-top: 20px;
+  padding: 10px;
+  background: #fff3e0;
+  border-radius: 10px;
+  border: 2px dashed #f57c00;
+  color: #4e342e;
+  white-space: pre-line;
+}
+
+input, button {
+  padding: 10px;
+  margin-top: 10px;
+  font-size: 1em;
+  width: 280px;
+  border: 2px solid #ff9800;
+  border-radius: 8px;
+}
+
+button {
+  cursor: pointer;
+  background: #ffb300;
+  color: white;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+button:hover {
+  background: #f57c00;
+}
+
+.section {
+  margin-top: 25px;
+}
+
+h3 {
+  color: #e65100;
+  margin-bottom: 8px;
+}
+
+/* Festive Pookalam-style border */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: radial-gradient(circle at center, #ffcc80 2px, transparent 3px),
+                    radial-gradient(circle at center, #f44336 2px, transparent 3px),
+                    radial-gradient(circle at center, #ffeb3b 2px, transparent 3px),
+                    radial-gradient(circle at center, #4caf50 2px, transparent 3px);
+  background-size: 40px 40px;
+  opacity: 0.15;
+  z-index: -1;
+}
+
+/* Banana leaf footer */
+footer {
+  margin-top: 40px;
+  padding: 10px;
+  background: linear-gradient(90deg, #388e3c, #66bb6a);
+  color: white;
+  border-radius: 12px;
+  font-weight: bold;
+}

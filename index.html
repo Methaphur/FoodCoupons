@@ -1,25 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Coupon Scanner</title>
+  <title>Onam Coupon Scanner</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://unpkg.com/html5-qrcode/html5-qrcode.min.js"></script>
-  <style>
-    body { font-family: sans-serif; text-align: center; padding: 20px; }
-    #reader { width: 300px; margin: auto; }
-    #result { font-size: 1.2em; margin-top: 20px; white-space: pre-line; }
-    input, button {
-      padding: 10px;
-      margin-top: 10px;
-      font-size: 1em;
-      width: 280px;
-    }
-    button { cursor: pointer; }
-    .section { margin-top: 25px; }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h2>Coupon Scanner</h2>
+  <h2>🌸 Onam Coupon Scanner 🍃</h2>
   <div id="reader"></div>
 
   <!-- Last scanned QR -->
@@ -35,62 +23,8 @@
     <button onclick="updateUsage()">Update Usage</button>
   </div>
 
-  <script>
-    const resultElem = document.getElementById("result");
-    const lastScanInput = document.getElementById("lastScan");
-    const usedInput = document.getElementById("usedCount");
+  <footer>🌼 Happy Onam! 🌼</footer>
 
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx9daAQI0u8-fQwaP0kXaicxoZjB2sVqLs_gIphS84rZjtSyJB3qxyoEMJa8IXu_na4/exec";
-1
-    // === Normal scan check ===
-    function checkCoupon(id) {
-      fetch(WEB_APP_URL + "?id=" + encodeURIComponent(id))
-        .then(r => r.text())
-        .then(txt => {
-          resultElem.innerText = txt;
-        })
-        .catch(err => {
-          resultElem.innerText = "⚠️ Error contacting server";
-          console.error(err);
-        });
-    }
-
-    // === Manual update usage ===
-    function updateUsage() {
-      let id = lastScanInput.value.trim();
-      let used = usedInput.value.trim();
-      if (!id) {
-        resultElem.innerText = "⚠️ No QR scanned yet!";
-        return;
-      }
-      if (!used) {
-        resultElem.innerText = "⚠️ Enter how many used";
-        return;
-      }
-
-      fetch(WEB_APP_URL + "?id=" + encodeURIComponent(id) + "&update=true&used=" + encodeURIComponent(used))
-        .then(r => r.text())
-        .then(txt => {
-          resultElem.innerText = txt;
-        })
-        .catch(err => {
-          resultElem.innerText = "⚠️ Error contacting server";
-          console.error(err);
-        });
-    }
-
-    // === Scanner ===
-    function onScanSuccess(decodedText) {
-      lastScanInput.value = decodedText;
-      resultElem.innerText = "Scanned: " + decodedText + " (checking...)";
-      checkCoupon(decodedText);
-    }
-    function onScanFailure(error) {
-      // ignore continuous scan failures
-    }
-
-    let scanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
-    scanner.render(onScanSuccess, onScanFailure);
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
