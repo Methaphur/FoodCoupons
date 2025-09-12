@@ -2,7 +2,7 @@ const resultElem = document.getElementById("result");
 const lastScanInput = document.getElementById("lastScan");
 const usedInput = document.getElementById("usedCount");
 
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx9daAQI0u8-fQwaP0kXaicxoZjB2sVqLs_gIphS84rZjtSyJB3qxyoEMJa8IXu_na4/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx3j20MU__Ff98j8B79jRmS03H-KqXU0PZ5c6fIJXBZuxN2IoZf0VVDa7vxHoH5YlM_/exec";
 
 // === Normal scan check ===
 function checkCoupon(id) {
