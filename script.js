@@ -42,19 +42,19 @@ function updateUsage() {
 }
 
 // === Scanner ===
+
 let scanningLocked = false;
 
 function onScanSuccess(decodedText) {
-  if (scanningLocked) return; // skip if still in cooldown
+    if (scanningLocked) return; // skip if still in cooldown
 
   scanningLocked = true;
   lastScanInput.value = decodedText;
   resultElem.innerText = "Scanned: " + decodedText + " (checking...)";
 
-  checkCoupon(decodedText).finally(() => {
-    // allow next scan (even same QR) after 2s
-    setTimeout(() => scanningLocked = false, 2000);
-  });
+  checkCoupon(decodedText);
+  // allow next scan (even same QR) after 2s
+  setTimeout(() => scanningLocked = false, 2000);
 }
 
 function onScanFailure(error) {
