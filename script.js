@@ -128,8 +128,8 @@ function parseReply(text) {
     if (out.remaining === 0) out.word = "Verified";
   } else if (/used up/i.test(t)) {
     out.state = "spent";
-    out.word = "Already used";
-    out.raw = "Every use on this coupon has been taken.";
+    out.word = "Coupon Expired";
+    out.raw = "Coupon has no remaining uses";
   } else if (t.indexOf("❌") === 0) {
     out.state = "invalid";
     out.word = "Not valid";
