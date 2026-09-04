@@ -19,7 +19,7 @@ const lastScanInput = document.getElementById("lastScan");
 const usedInput     = document.getElementById("usedCount");
 
 // Replace with your Apps Script Web App URL
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxm5TH9vgb7q1nms2Z-sMdymxp5FAdw96ya1hJFw6Z2LFYM5ycxjylBsKMdy0QIqB3f/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw70TvgTi-F0z3WDr6SXaF-wxH9kQVEd1yLEobxCzqaeUq6ZwZEWga5j0zRTg2-ICnh/exec";
 
 // === Password ===
 // Kept in localStorage so a volunteer stays logged in until they press Lock.
