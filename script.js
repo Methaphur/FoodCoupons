@@ -125,7 +125,7 @@ function parseReply(text) {
   if (t.indexOf("✅") === 0) {
     out.state = "ok";
     out.word = /Updated/i.test(t) ? "Updated" : "Verified";
-    if (out.remaining === 0) out.word = "Verified · last one";
+    if (out.remaining === 0) out.word = "Verified";
   } else if (/used up/i.test(t)) {
     out.state = "spent";
     out.word = "Already used";
