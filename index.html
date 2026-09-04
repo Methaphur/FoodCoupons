@@ -1,44 +1,81 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>QR Coupon Scanner</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <title>Onam Sadhya · Coupon Desk</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0C1B14">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/html5-qrcode/html5-qrcode.min.js"></script>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Login gate -->
-  <div id="login">
-    <h2>Volunteer Login</h2>
-    <div class="section">
-      <input type="password" id="password" placeholder="Enter password" autocomplete="current-password">
-      <button id="loginBtn" onclick="login()">Unlock</button>
-      <p id="loginResult"></p>
-    </div>
-  </div>
 
-  <!-- Scanner (hidden until unlocked) -->
-  <div id="app" hidden>
-    <h2>QR Scanner</h2>
-    <div id="reader"></div>
-
-    <!-- Last scanned QR -->
-    <div class="section">
-      <input type="text" id="lastScan" placeholder="Last scanned QR" readonly>
-      <p id="result">Waiting for scan...</p>
+  <!-- ══ Lock screen ══ -->
+  <section id="login" class="lock">
+    <div class="lock__art">
+      <svg id="pookalam" viewBox="0 0 240 240" aria-hidden="true"></svg>
     </div>
 
-    <!-- Manual update usage -->
-    <div class="section">
-      <h3>Set Uses</h3>
-      <input type="number" id="usedCount" placeholder="Enter used count">
-      <button onclick="updateUsage()">Update Usage</button>
+    <h1 class="lock__title">Onam Sadhya</h1>
+    <p class="lock__sub">Coupon desk</p>
+
+    <form id="loginForm" class="lock__form" autocomplete="on">
+      <label class="field">
+        <span class="field__label">Volunteer password</span>
+        <input type="password" id="password" name="password"
+               autocomplete="current-password" enterkeyhint="go" required>
+      </label>
+      <button type="submit" id="loginBtn" class="btn btn--gold">Unlock scanner</button>
+      <p id="loginResult" class="notice" role="status" aria-live="polite"></p>
+    </form>
+  </section>
+
+  <!-- ══ Scanner ══ -->
+  <section id="app" class="app" hidden>
+    <header class="bar">
+      <svg class="bar__mark" viewBox="0 0 32 32" aria-hidden="true">
+        <circle cx="16" cy="16" r="14" fill="none" stroke="#D9B44A" stroke-width="1.5"/>
+        <circle cx="16" cy="16" r="9"  fill="none" stroke="#F5A524" stroke-width="1.5"/>
+        <circle cx="16" cy="16" r="4"  fill="#E75A47"/>
+      </svg>
+      <h1 class="bar__title">Coupon desk</h1>
+      <button type="button" id="lockBtn" class="btn btn--ghost">Lock</button>
+    </header>
+
+    <div class="scanner">
+      <div id="reader"></div>
     </div>
 
-    <div class="section">
-      <button class="lock" onclick="logout()">Lock</button>
+    <!-- The verdict: the one thing a volunteer reads -->
+    <div id="verdict" class="verdict is-idle" role="status" aria-live="polite">
+      <div class="verdict__ring">
+        <svg id="ring" viewBox="0 0 120 120" aria-hidden="true"></svg>
+        <span id="ringNum" class="verdict__count"></span>
+      </div>
+      <p id="verdictWord" class="verdict__word">Ready to scan</p>
+      <p id="verdictName" class="verdict__name"></p>
+      <p id="verdictRaw" class="verdict__raw"></p>
+      <dl id="verdictMeta" class="verdict__meta"></dl>
     </div>
-  </div>
+
+    <details class="manual">
+      <summary class="manual__summary">Adjust uses manually</summary>
+      <div class="manual__body">
+        <label class="field">
+          <span class="field__label">Last scanned coupon</span>
+          <input type="text" id="lastScan" class="field__mono" placeholder="No coupon scanned yet" readonly>
+        </label>
+        <label class="field">
+          <span class="field__label">Uses already taken</span>
+          <input type="number" id="usedCount" min="0" inputmode="numeric" placeholder="0">
+        </label>
+        <button type="button" id="updateBtn" class="btn btn--quiet">Update usage</button>
+      </div>
+    </details>
+  </section>
 
   <script src="script.js"></script>
 </body>
