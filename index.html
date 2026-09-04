@@ -1,29 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Onam Coupon Scanner</title>
+  <title>QR Coupon Scanner</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://unpkg.com/html5-qrcode/html5-qrcode.min.js"></script>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h2>🌸 Onam Coupon Scanner 🍃</h2>
-  <div id="reader"></div>
-
-  <!-- Last scanned QR -->
-  <div class="section">
-    <input type="text" id="lastScan" placeholder="Last scanned QR will appear here" readonly>
-    <p id="result">Waiting for scan...</p>
+  <!-- Login gate -->
+  <div id="login">
+    <h2>Volunteer Login</h2>
+    <div class="section">
+      <input type="password" id="password" placeholder="Enter password" autocomplete="current-password">
+      <button id="loginBtn" onclick="login()">Unlock</button>
+      <p id="loginResult"></p>
+    </div>
   </div>
 
-  <!-- Manual update usage -->
-  <div class="section">
-    <h3>Set Uses</h3>
-    <input type="number" id="usedCount" placeholder="Enter used count">
-    <button onclick="updateUsage()">Update Usage</button>
-  </div>
+  <!-- Scanner (hidden until unlocked) -->
+  <div id="app" hidden>
+    <h2>QR Scanner</h2>
+    <div id="reader"></div>
 
-  <footer>🌼 Happy Onam! 🌼</footer>
+    <!-- Last scanned QR -->
+    <div class="section">
+      <input type="text" id="lastScan" placeholder="Last scanned QR" readonly>
+      <p id="result">Waiting for scan...</p>
+    </div>
+
+    <!-- Manual update usage -->
+    <div class="section">
+      <h3>Set Uses</h3>
+      <input type="number" id="usedCount" placeholder="Enter used count">
+      <button onclick="updateUsage()">Update Usage</button>
+    </div>
+
+    <div class="section">
+      <button class="lock" onclick="logout()">Lock</button>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
